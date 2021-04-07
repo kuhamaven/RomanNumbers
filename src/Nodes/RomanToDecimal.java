@@ -20,13 +20,16 @@ public class RomanToDecimal {
     }
 
     private static boolean stringIsValid(String romanNumber){
-        //^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$ This regex is overkill.
+        //^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$ This regex is overkill.
 
         if (romanNumber.length()>15) return false;
         if (!romanNumber.matches("^[MDCLXVImdclxvi]+$")) return false;
         // you never have more than 3 I X C or M in the number
         if (romanNumber.matches(".*(\\w).*\\1.*\\1.*\\1.*")) return false;
         // you never have more than 1 V L or D in the number
+        if (    romanNumber.matches("(V)\1{1,2}") ||
+                romanNumber.matches("(D)\1{1,2}") ||
+                romanNumber.matches("(L)\1{1,2}")) return false;
         // it should reject substraction addition cancel, like IXI, IVI, XLX, XCX, CDC & CMC
         return true;
     }
